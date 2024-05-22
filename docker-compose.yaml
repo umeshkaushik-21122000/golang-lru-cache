@@ -1,0 +1,28 @@
+version: '3.9'
+
+services:
+  redis:
+    image: redis:7.0-alpine
+    restart: always
+    ports:
+      - '6379:6379'
+    command: redis-server --save 20 1 --requirepass redis987456 --loglevel warning
+    networks:
+      - app_network
+    volumes:
+      - redis:/data/redis
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 200M
+        reservations:
+          cpus: '0.25'
+          memory: 100M
+
+volumes:
+  redis:
+
+networks:
+  app_network:
+    driver: bridge
